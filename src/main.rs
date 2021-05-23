@@ -6,24 +6,18 @@ use clap::{AppSettings, Clap};
 #[clap(version = "0.1", author = "Abhinav <abhinavy14@gmail.com>", about = "prettify csv to table")]
 #[clap(setting = AppSettings::ColoredHelp)]
 struct Opts{
-    #[clap(default_value = "help.csv", value_name = "FILE")]
+    #[clap( value_name = "FILE")]
     input: String,
     #[clap(short, long, default_value = "\n", about = "csv delimiter")]
     delimiter: char,
     #[clap(short, long, default_value = "table.txt", about = "output file_name")]
-    output: String,
-    #[clap(short, long, about = "help in table format")]
-    tabular_help: bool
+    output: String
 }
 
 fn main() {
     let opts: Opts = Opts::parse();
-    let Opts {input, delimiter, output, tabular_help} = opts;
+    let Opts {input, delimiter, output} = opts;
     let data = std::fs::read_to_string(input).unwrap();
-    if tabular_help {
-        let help = std::fs::read_to_string("./help.csv").unwrap();                  let help = parse_csv(help, '\n');                                           let help_table = process_string_to_table(&help, calc_max_len(&help));
-        println!("{}", help_table);                                                 std::process::exit(0);
-    }
     let data = parse_csv(data, delimiter);
     println!("processing...");
     std::io::stdout().flush().unwrap();

@@ -1,7 +1,0 @@
-Help,     ,Page
-about,    ,convert csv file to pretty table
-----,----,----
-options,   ,discription
--f or --file,   ,provide a csv file
--d or --delimeter,   ,delimeter in csv file (default \n)
--o or --output,   ,get the table in a file with any file name
