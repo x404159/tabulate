@@ -12,8 +12,8 @@ use std::io::Write;
 struct Opts {
     #[clap(value_name = "FILE")]
     input: String,
-    #[clap(short, long, default_value = "\n", about = "csv delimiter")]
-    delimiter: char,
+    #[clap(short = 's', long, default_value = "\n", about = "csv record separator")]
+    record_separator: char,
     #[clap(short, long, default_value = "table.txt", about = "output file_name")]
     output: String,
 }
@@ -22,11 +22,11 @@ fn main() {
     let opts: Opts = Opts::parse();
     let Opts {
         input,
-        delimiter,
+        record_separator,
         output,
     } = opts;
     let data = std::fs::read_to_string(input).unwrap();
-    let data = parse_csv(data, delimiter);
+    let data = parse_csv(data, record_separator);
     println!("processing...");
     std::io::stdout().flush().unwrap();
     let table = process_string_to_table(&data, calc_max_len(&data));
@@ -92,9 +92,9 @@ fn calc_max_len(data: &[Vec<String>]) -> Vec<usize> {
     length
 }
 
-fn parse_csv(data: String, delimiter: char) -> Vec<Vec<String>> {
+fn parse_csv(data: String, record_separator: char) -> Vec<Vec<String>> {
     let mut rows = data
-        .split(delimiter)
+        .split(record_separator)
         .map(|s| s.to_owned())
         .collect::<Vec<String>>();
     if rows.last().unwrap() == "" {
